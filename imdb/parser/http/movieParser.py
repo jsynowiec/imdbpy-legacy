@@ -491,7 +491,7 @@ class DOMHTMLMovieParser(DOMParserBase):
             attrs=Attribute(
                 key='previous episode',
                 path="./@href",
-                postprocess=lambda x: analyze_imdbid(x)
+                postprocess=analyze_imdbid
             )
         ),
 
@@ -501,7 +501,7 @@ class DOMHTMLMovieParser(DOMParserBase):
             attrs=Attribute(
                 key='next episode',
                 path="./@href",
-                postprocess=lambda x: analyze_imdbid(x)
+                postprocess=analyze_imdbid
             )
         ),
 
@@ -739,7 +739,13 @@ class DOMHTMLMovieParser(DOMParserBase):
                 pass
         if 'votes' in data:
             try:
-                votes = data['votes'].replace('(', '').replace(')', '').replace(',', '').replace('votes', '')
+                votes = (
+                    data['votes']
+                    .replace('(', '')
+                    .replace(')', '')
+                    .replace(',', '')
+                    .replace('votes', '')
+                )
                 data['votes'] = int(votes)
             except (TypeError, ValueError):
                 pass
@@ -1138,8 +1144,7 @@ class DOMHTMLCrazyCreditsParser(DOMParserBase):
 def _process_goof(x):
     if x['spoiler_category']:
         return x['spoiler_category'].strip() + ': SPOILER: ' + x['text'].strip()
-    else:
-        return x['category'].strip() + ': ' + x['text'].strip()
+    return x['category'].strip() + ': ' + x['text'].strip()
 
 
 class DOMHTMLGoofsParser(DOMParserBase):
@@ -1567,27 +1572,30 @@ class DOMHTMLReviewsParser(DOMParserBase):
     kind = 'reviews'
 
     extractors = [
-        Extractor(label='review',
-                path="//div[@class='reviews']/div/div/div[@class='yn']",
-                attrs=Attribute(key='self.kind',
-                    multi=True,
-                    path={
-                        'text': "./preceding::p[1]/text()",
-                        'helpful': "./preceding::div[1]/small[1]/text()",
-                        'title': "./preceding::div[1]/h2/text()",
-                        'author': "./preceding::div[1]/a[1]/@href",
-                        'date': "./preceding::div[1]/small[3]/text()",
-                        'rating': "./preceding::div[1]/img/@alt"
-                    },
-                    postprocess=lambda x: ({
-                        'content': (x['text'] or '').replace("\n", " ").replace('  ', ' ').strip(),
-                        'helpful': [int(s) for s in (x.get('helpful') or '').split() if s.isdigit()],
-                        'title': (x.get('title') or '').strip(),
-                        'author': analyze_imdbid(x.get('author')),
-                        'date': (x.get('date') or '').strip(),
-                        'rating': (x.get('rating') or '').strip().split('/')
-                    })
-                ))
+        Extractor(
+            label='review',
+            path="//div[@class='reviews']/div/div/div[@class='yn']",
+            attrs=Attribute(
+                key='self.kind',
+                multi=True,
+                path={
+                    'text': "./preceding::p[1]/text()",
+                    'helpful': "./preceding::div[1]/small[1]/text()",
+                    'title': "./preceding::div[1]/h2/text()",
+                    'author': "./preceding::div[1]/a[1]/@href",
+                    'date': "./preceding::div[1]/small[3]/text()",
+                    'rating': "./preceding::div[1]/img/@alt"
+                },
+                postprocess=lambda x: ({
+                    'content': (x['text'] or '').replace("\n", " ").replace('  ', ' ').strip(),
+                    'helpful': [int(s) for s in (x.get('helpful') or '').split() if s.isdigit()],
+                    'title': (x.get('title') or '').strip(),
+                    'author': analyze_imdbid(x.get('author')),
+                    'date': (x.get('date') or '').strip(),
+                    'rating': (x.get('rating') or '').strip().split('/')
+                })
+            )
+        )
     ]
 
     preprocessors = [('<br>', '<br>\n')]
@@ -2551,7 +2559,7 @@ _OBJECTS = {
     'releasedates_parser': ((DOMHTMLReleaseinfoParser,), None),
     'ratings_parser': ((DOMHTMLRatingsParser,), None),
     'criticrev_parser': ((DOMHTMLCriticReviewsParser,), {'kind': 'critic reviews'}),
-    'reviews_parser':  ((DOMHTMLReviewsParser,), {'kind': 'reviews'}),
+    'reviews_parser': ((DOMHTMLReviewsParser,), {'kind': 'reviews'}),
     'externalsites_parser': ((DOMHTMLOfficialsitesParser,), None),
     'officialsites_parser': ((DOMHTMLOfficialsitesParser,), None),
     'externalrev_parser': ((DOMHTMLOfficialsitesParser,), None),

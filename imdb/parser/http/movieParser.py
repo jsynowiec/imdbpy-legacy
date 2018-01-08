@@ -28,9 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 """
 
 import re
-import urllib.error
-import urllib.parse
-import urllib.request
+import urllib
 
 from imdb import imdbURL_base
 from imdb.Company import Company
@@ -1679,7 +1677,7 @@ class DOMHTMLOfficialsitesParser(DOMParserBase):
                 },
                 postprocess=lambda x: (
                     x.get('info').strip(),
-                    urllib.parse.unquote(_normalize_href(x.get('link')))
+                    urllib.unquote(_normalize_href(x.get('link')))
                 )
             )
         )

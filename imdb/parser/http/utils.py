@@ -613,7 +613,7 @@ class DOMParserBase(object):
             return html_string
         # Remove silly &nbsp;&raquo; and &ndash; chars.
         html_string = html_string.replace(u' \xbb', u'')
-        html_string = html_string.replace('–', '-')
+        html_string = html_string.replace(u'\xe2', u'-')
         html_string = html_string.replace(u'&ndash;', u'-')
         try:
             preprocessors = self.preprocessors

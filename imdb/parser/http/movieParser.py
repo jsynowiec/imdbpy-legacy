@@ -36,9 +36,18 @@ from imdb import imdbURL_base
 from imdb.Company import Company
 from imdb.Movie import Movie
 from imdb.Person import Person
-from imdb.utils import _Container, KIND_MAP
+from imdb.utils import (
+    _Container,
+    KIND_MAP,
+)
 
-from .utils import Attribute, DOMParserBase, Extractor, analyze_imdbid, build_person
+from imdb.parser.http.utils import (
+    analyze_imdbid,
+    Attribute,
+    build_person,
+    DOMParserBase,
+    Extractor,
+)
 
 
 # Dictionary used to convert some section's names.
@@ -114,7 +123,10 @@ def _manageRoles(mo):
     return firstHalf + ' / '.join(newRoles) + mo.group(3)
 
 
-_reRolesMovie = re.compile(r'(<td class="character">)(.*?)(</td>)', re.I | re.M | re.S)
+_reRolesMovie = re.compile(
+    r'(<td class="character">)(.*?)(</td>)',
+    re.I | re.M | re.S,
+)
 
 
 def _replaceBR(mo):
@@ -912,8 +924,9 @@ class DOMHTMLAwardsParser(DOMParserBase):
         return dom
 
     def postprocess_data(self, data):
-        if len(data) == 0:
+        if not data:
             return {}
+
         nd = []
         for key in list(data.keys()):
             dom = self.get_dom(key)
@@ -1341,7 +1354,10 @@ class DOMHTMLRatingsParser(DOMParserBase):
         rparser = DOMHTMLRatingsParser()
         result = rparser.parse(userratings_html_string)
     """
-    re_means = re.compile('mean\s*=\s*([0-9]\.[0-9])\s*median\s*=\s*([0-9])', re.I)
+    re_means = re.compile(
+        r'mean\s*=\s*([0-9]\.[0-9])\s*median\s*=\s*([0-9])',
+        re.I,
+    )
 
     extractors = [
         Extractor(
@@ -1816,14 +1832,14 @@ class DOMHTMLTechParser(DOMParserBase):
     ]
 
     preprocessors = [
-        (re.compile('(<h5>.*?</h5>)', re.I), r'</div>\1<div class="_imdbpy">'),
-        (re.compile('((<br/>|</p>|</table>))\n?<br/>(?!<a)', re.I), r'\1</div>'),
+        (re.compile(r'(<h5>.*?</h5>)', re.I), r'</div>\1<div class="_imdbpy">'),
+        (re.compile(r'((<br/>|</p>|</table>))\n?<br/>(?!<a)', re.I), r'\1</div>'),
         # the ones below are for the publicity parser
-        (re.compile('<p>(.*?)</p>', re.I), r'\1<br/>'),
-        (re.compile('(</td><td valign="top">)', re.I), r'\1::'),
-        (re.compile('(</tr><tr>)', re.I), r'\n\1'),
-        (re.compile('<span class="ghost">\|</span>', re.I), r':::'),
-        (re.compile('<br/?>', re.I), r':::')
+        (re.compile(r'<p>(.*?)</p>', re.I), r'\1<br/>'),
+        (re.compile(r'(</td><td valign="top">)', re.I), r'\1::'),
+        (re.compile(r'(</tr><tr>)', re.I), r'\n\1'),
+        (re.compile(r'<span class="ghost">\|</span>', re.I), r':::'),
+        (re.compile(r'<br/?>', re.I), r':::')
         # this is for splitting individual entries
     ]
 
@@ -2447,7 +2463,7 @@ class DOMHTMLAiringParser(DOMParserBase):
     ]
 
     def postprocess_data(self, data):
-        if len(data) == 0:
+        if not data:
             return {}
         seriesTitle = data.get('series title') or ''
         seriesID = analyze_imdbid(data.get('series id'))

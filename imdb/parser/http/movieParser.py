@@ -1063,7 +1063,8 @@ class DOMHTMLTriviaParser(DOMParserBase):
                 key='trivia',
                 multi=True,
                 path=".//text()",
-                postprocess=lambda x: x.strip())
+                postprocess=lambda x: x.strip()
+            )
         )
     ]
 

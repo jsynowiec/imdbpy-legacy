@@ -120,7 +120,7 @@ entcharrefs['#38'] = u'&amp;'
 entcharrefs['#x26'] = u'&amp;'
 entcharrefs['#x26'] = u'&amp;'
 
-re_entcharrefs = re.compile('&(%s|\#160|\#\d{1,5}|\#x[0-9a-f]{1,4});' %
+re_entcharrefs = re.compile(r'&(%s|\#160|\#\d{1,5}|\#x[0-9a-f]{1,4});' %
                             '|'.join(map(re.escape, entcharrefs)), re.I)
 re_entcharrefssub = re_entcharrefs.sub
 
@@ -631,7 +631,7 @@ class DOMParserBase(object):
                     _msg = '%s: caught exception preprocessing html'
                     self._logger.error(_msg, self._cname, exc_info=True)
                     continue
-        ##print html_string.encode('utf8')
+        # print html_string.encode('utf8')
         return html_string
 
     def gather_refs(self, dom):
@@ -655,7 +655,7 @@ class DOMParserBase(object):
         in self.extractors."""
         result = {}
         for extractor in self.extractors:
-            ##print extractor.label
+            # print extractor.label
             if extractor.group is None:
                 elements = [(extractor.label, element)
                             for element in self.xpath(dom, extractor.path)]
@@ -664,7 +664,8 @@ class DOMParserBase(object):
                 elements = []
                 for group in groups:
                     group_key = self.xpath(group, extractor.group_key)
-                    if not group_key: continue
+                    if not group_key:
+                        continue
                     group_key = group_key[0]
                     # XXX: always tries the conversion to unicode:
                     #      BeautifulSoup.NavigableString is a subclass
@@ -746,18 +747,29 @@ class DOMParserBase(object):
     def add_refs(self, data):
         """Modify data according to the expected output."""
         if self.getRefs:
-            titl_re = ur'(%s)' % '|'.join([re.escape(x) for x
-                                            in self._titlesRefs.keys()])
-            if titl_re != ur'()': re_titles = re.compile(titl_re, re.U)
-            else: re_titles = None
-            nam_re = ur'(%s)' % '|'.join([re.escape(x) for x
-                                            in self._namesRefs.keys()])
-            if nam_re != ur'()': re_names = re.compile(nam_re, re.U)
-            else: re_names = None
-            chr_re = ur'(%s)' % '|'.join([re.escape(x) for x
-                                            in self._charactersRefs.keys()])
-            if chr_re != ur'()': re_characters = re.compile(chr_re, re.U)
-            else: re_characters = None
+            titl_re = ur'(%s)' % '|'.join([
+                re.escape(x) for x in self._titlesRefs.keys()
+            ])
+            if titl_re != ur'()':
+                re_titles = re.compile(titl_re, re.U)
+            else:
+                re_titles = None
+
+            nam_re = ur'(%s)' % '|'.join([
+                re.escape(x) for x in self._namesRefs.keys()
+            ])
+            if nam_re != ur'()':
+                re_names = re.compile(nam_re, re.U)
+            else:
+                re_names = None
+            chr_re = ur'(%s)' % '|'.join([
+                re.escape(x) for x in self._charactersRefs.keys()
+            ])
+            if chr_re != ur'()':
+                re_characters = re.compile(chr_re, re.U)
+            else:
+                re_characters = None
+
             _putRefs(data, re_titles, re_names, re_characters)
         return {'data': data, 'titlesRefs': self._titlesRefs,
                 'namesRefs': self._namesRefs,
@@ -881,5 +893,3 @@ class GatherRefs(DOMParserBase):
 
     def add_refs(self, data):
         return data
-
-

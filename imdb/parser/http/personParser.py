@@ -439,23 +439,18 @@ class DOMHTMLOtherWorksParser(DOMParserBase):
     _defGetRefs = True
     kind = 'other works'
 
-    # XXX: looks like the 'agent' page is no more public.
     extractors = [
-            Extractor(label='other works',
-                        path="//h5[text()='Other works']/" \
-                                "following-sibling::div[1]",
-                        attrs=Attribute(key='self.kind',
-                            path=".//text()",
-                            postprocess=lambda x: x.strip().split('\n\n')))
-            ]
-
-    preprocessors = [
-        (re.compile('(<h5>[^<]+</h5>)', re.I),
-            r'</div>\1<div class="_imdbpy">'),
-        (re.compile('(</table>\n</div>\s+)</div>', re.I), r'\1'),
-        (re.compile('(<div id="tn15bot">)'), r'</div>\1'),
-        (re.compile('<br/><br/>', re.I), r'\n\n')
-        ]
+        Extractor(
+            label='other works',
+            path="//li[@class='ipl-zebra-list__item']",
+            attrs=Attribute(
+                key='other works',
+                path=".//text()",
+                multi=True,
+                postprocess=lambda x: x.strip()
+            )
+        )
+    ]
 
 
 def _build_episode(link, title, minfo, role, roleA, roleAID):
@@ -604,7 +599,6 @@ _OBJECTS = {
     'bio_parser': ((DOMHTMLBioParser,), None),
     'resume_parser': ((DOMHTMLResumeParser,), None),
     'otherworks_parser': ((DOMHTMLOtherWorksParser,), None),
-    #'agent_parser': ((DOMHTMLOtherWorksParser,), {'kind': 'agent'}),
     'person_officialsites_parser': ((DOMHTMLOfficialsitesParser,), None),
     'person_awards_parser': ((DOMHTMLAwardsParser,), {'subject': 'name'}),
     'publicity_parser': ((DOMHTMLTechParser,), {'kind': 'publicity'}),

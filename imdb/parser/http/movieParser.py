@@ -660,7 +660,7 @@ class DOMHTMLMovieParser(DOMParserBase):
 
     def postprocess_data(self, data):
         # Convert section names.
-        for sect in list(data.keys()):
+        for sect in data.keys():
             if sect in _SECT_CONV:
                 data[_SECT_CONV[sect]] = data[sect]
                 del data[sect]
@@ -928,7 +928,7 @@ class DOMHTMLAwardsParser(DOMParserBase):
             return {}
 
         nd = []
-        for key in list(data.keys()):
+        for key in data.keys():
             dom = self.get_dom(key)
             assigner = self.xpath(dom, "//a/text()")[0]
             for entry in data[key]:
@@ -1752,7 +1752,7 @@ class DOMHTMLConnectionParser(DOMParserBase):
     ]
 
     def postprocess_data(self, data):
-        for key in list(data.keys()):
+        for key in data.keys():
             nl = []
             for v in data[key]:
                 title = v['title']
@@ -1856,7 +1856,7 @@ class DOMHTMLTechParser(DOMParserBase):
                     data['biography-print'] = data['biography (print)']
                     del data['biography (print)']
             # Tech info.
-            for key in list(data.keys()):
+            for key in data.keys():
                 if key.startswith('film negative format'):
                     data['film negative format'] = data[key]
                     del data[key]
@@ -1937,7 +1937,7 @@ class DOMHTMLRecParser(DOMParserBase):
     ]
 
     def postprocess_data(self, data):
-        for key in list(data.keys()):
+        for key in data.keys():
             n_key = key
             n_keyl = n_key.lower()
             if n_keyl == 'suggested by the database':
@@ -2319,7 +2319,7 @@ class DOMHTMLEpisodesParser(DOMParserBase):
         series = Movie(title=stitle, movieID=str(seriesID),
                        accessSystem=self._as, modFunct=self._modFunct)
         nd = {}
-        for key in list(data.keys()):
+        for key in data.keys():
             if key.startswith('filter-season-') or key.startswith('season-'):
                 season_key = key.replace('filter-season-', '').replace('season-', '')
                 try:

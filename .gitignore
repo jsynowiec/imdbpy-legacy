@@ -9,3 +9,4 @@ dist/
 .cache/
 .tox/
 .vscode/settings.json
+.vscode/tags

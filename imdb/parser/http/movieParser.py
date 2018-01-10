@@ -208,6 +208,24 @@ def analyze_og_title(og_title):
     return data
 
 
+def analyze_certificates(certificates):
+    def reducer(acc, el):
+        cert_re = re.compile(r'^(.+):(.+)$', re.UNICODE)
+        
+        if cert_re.match(el):
+            acc.append(el)
+        elif acc:
+            acc[-1] = u'{}::{}'.format(
+                acc[-1],
+                el,
+            )
+
+        return acc
+        
+    certificates = [el.strip() for el in certificates.split('\n') if el.strip()]
+    return reduce(reducer, certificates, [])
+
+
 class DOMHTMLMovieParser(DOMParserBase):
     """Parser for the "combined details" (and if instance.mdparse is
     True also for the "main details") page of a given movie.
@@ -399,7 +417,7 @@ class DOMHTMLMovieParser(DOMParserBase):
                 Attribute(
                     key='certificates',
                     path=".//td[starts-with(text(), 'Certificat')]/..//text()",
-                    postprocess=makeSplitter('Certification:', sep='\n')
+                    postprocess=analyze_certificates
                 ),
                 Attribute(
                     key='seasons',

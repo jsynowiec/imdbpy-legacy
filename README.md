@@ -1,5 +1,8 @@
 # IMDbPY-legacy
 
+[![python](https://img.shields.io/badge/python-2.7-green.svg)]()
+[![license](https://img.shields.io/github/license/jsynowiec/imdbpy-legacy.svg)]()
+
 **IMDbPY** is a Python package useful to retrieve and manage the data of the [IMDb][imdb] movie database about movies, people, characters and companies.
 
 This is the fork of *imdbpy-legacy* branch of [IMDbPY][imdbpy] python package, still compatible with Python 2.7. An effort is made to downstream merge all changes to parsers and keep it working with current IMDb sites structure.

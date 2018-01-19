@@ -28,10 +28,7 @@ __all__ = ['IMDb', 'IMDbError', 'Movie', 'Person', 'Character', 'Company',
 __version__ = VERSION = '5.2.1dev20171113'
 
 VERSION_NOTICE = """This is the imdbpy-legacy branch of IMDbPY, and requires Python 2.
-Please notice that this version is mostly unsupported.
-
-For a version compatible with Python 3, see the master branch:
-    https://github.com/alberanid/imdbpy/
+For a version compatible with Python 3, see the master branch: https://github.com/alberanid/imdbpy/
 """
 
 import sys

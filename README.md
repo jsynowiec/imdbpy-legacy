@@ -1,4 +1,4 @@
-# IMDbPY
+# IMDbPY-legacy
 
 **IMDbPY** is a Python package useful to retrieve and manage the data of the [IMDb][imdb] movie database about movies, people, characters and companies.
 

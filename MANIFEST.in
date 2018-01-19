@@ -9,11 +9,8 @@
 recursive-include docs *
 recursive-include imdb/locale *
 global-exclude *~
-prune CVS
-prune .svn
-prune .hg
-global-exclude CVS
-global-exclude .svn
+prune .git
+global-exclude .git
 
 # Try to force the inclusion of ez_setup.py.
 include ez_setup.py

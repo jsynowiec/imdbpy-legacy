@@ -30,7 +30,7 @@ in this package; other IMDbPY-based programs are available at the
 home page: %s
 """ % home_page
 
-dwnl_url = 'http://imdbpy.sf.net/?page=download'
+dwnl_url = 'https://github.com/jsynowiec/imdbpy-legacy/releases'
 
 classifiers = """\
 Development Status :: 5 - Production/Stable

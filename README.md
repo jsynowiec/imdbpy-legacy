@@ -10,7 +10,7 @@ This is the fork of *imdbpy-legacy* branch of [IMDbPY][imdbpy] python package, s
 * platform-independent
 * can retrieve data from both the IMDb's web server and a local copy of the whole database
 * a simple and complete API
-* released under the terms of the GPL 2 license
+* released under the GPL-2.0+ license
 * IMDbPY powers many other softwares and has been used in various research papers. [Curious about that][ecosystem]?
 
 ## Code example
@@ -28,7 +28,7 @@ This is the fork of *imdbpy-legacy* branch of [IMDbPY][imdbpy] python package, s
 
 ## License
 
-IMDbPY is released under the terms of the GNU GPL v2 license.
+Released under the GPL-2.0+ license.
 
 [imdb]: http://imdb.com
 [ecosystem]: http://imdbpy.sourceforge.net/ecosystem.html

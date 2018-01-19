@@ -8,9 +8,7 @@ ez_setup.use_setuptools()
 
 import setuptools
 
-# version of the software; in the code repository this represents
-# the _next_ release.  setuptools will automatically add 'dev-rREVISION'.
-version = '5.2'
+import imdb
 
 home_page = 'https://github.com/jsynowiec/imdbpy-legacy'
 
@@ -112,7 +110,7 @@ features = {
 params = {
         # Meta-information.
         'name': 'IMDbPY',
-        'version': version,
+        'version': imdb.__version__,
         'description': 'Python package to access the IMDb\'s database',
         'long_description': long_desc,
         'author': 'Davide Alberani',

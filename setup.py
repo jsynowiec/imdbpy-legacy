@@ -12,7 +12,7 @@ import setuptools
 # the _next_ release.  setuptools will automatically add 'dev-rREVISION'.
 version = '5.2'
 
-home_page = 'http://imdbpy.sf.net/'
+home_page = 'https://github.com/jsynowiec/imdbpy-legacy'
 
 long_desc = """IMDbPY is a Python package useful to retrieve and
 manage the data of the IMDb movie database about movies, people,

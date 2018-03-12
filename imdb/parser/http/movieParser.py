@@ -1835,6 +1835,43 @@ class DOMHTMLLocationsParser(DOMParserBase):
     ]
 
 
+class DOMHTMLCompanyCreditsParser(DOMParserBase):
+    """Parser for the "companycredits" page of a given movie.
+    The page should be provided as a string, as taken from
+    the akas.imdb.com server.  The final result will be a
+    dictionary, with a key for every relevant section.
+
+    Example:
+        lparser = DOMHTMLLocationsParser()
+        result = lparser.parse(locations_html_string)
+    """
+    extractors = [
+        Extractor(
+            label='company credits',
+            group='//h4[@name]',
+            group_key='./@name',
+            group_key_normalize=lambda x: x.strip().lower(),
+            path='./following::ul[1]/li/a',
+            attrs=Attribute(
+                key=None,
+                multi=True,
+                path={
+                    'name': './text()',
+                    'company-link': './@href'
+                },
+                postprocess=(
+                    lambda x: (
+                        Company(
+                            name=x.get('name', '').strip(),
+                            companyID=analyze_imdbid(x.get('company-link')),
+                        )
+                    )
+                ),
+            )
+        ),
+    ]
+
+
 class DOMHTMLTechParser(DOMParserBase):
     """Parser for the "technical", "publicity" (for people) and "contacts" (for people)
     pages of a given movie.
@@ -2626,6 +2663,7 @@ _OBJECTS = {
     'business_parser': ((DOMHTMLBusinessParser,), {'kind': 'business', '_defGetRefs': 1}),
     'literature_parser': ((DOMHTMLBusinessParser,), None),
     'locations_parser': ((DOMHTMLLocationsParser,), None),
+    'company_credits_parser': ((DOMHTMLCompanyCreditsParser,), None),
     'rec_parser': ((DOMHTMLRecParser,), None),
     'news_parser': ((DOMHTMLNewsParser,), None),
     'episodes_parser': ((DOMHTMLEpisodesParser,), None),

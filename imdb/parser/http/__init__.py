@@ -586,6 +586,10 @@ class IMDbHTTPAccessSystem(IMDbBase):
         cont = self._retrieve(self.urls['movie_main'] % movieID + 'locations')
         return self.mProxy.locations_parser.parse(cont)
 
+    def get_movie_company_credits(self, movieID):
+        cont = self._retrieve(self.urls['movie_main'] % movieID + 'companycredits')
+        return self.mProxy.company_credits_parser.parse(cont)
+
     def get_movie_soundtrack(self, movieID):
         cont = self._retrieve(self.urls['movie_main'] % movieID + 'soundtrack')
         return self.mProxy.soundtrack_parser.parse(cont)
